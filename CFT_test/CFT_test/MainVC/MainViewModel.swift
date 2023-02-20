@@ -39,6 +39,10 @@ class MainViewModel {
                         let note = Note(entity: NSEntityDescription.entity(forEntityName: "Note", in: self.persistentContainer.viewContext)!, insertInto: self.persistentContainer.viewContext)
                         note.title = "Ваша новая заметка"
                         note.description_note = "Добавьте описание"
+                        note.fontTitle = "system"
+                        note.fontDescription = "system"
+                        note.fontSizeTitle = 14
+                        note.fontSizeDescription = 12
                         try? note.managedObjectContext?.save()
                         print("loaded")
                     }
@@ -56,6 +60,10 @@ class MainViewModel {
         let note = Note.init(entity: NSEntityDescription.entity(forEntityName: "Note", in: persistentContainer.viewContext)!, insertInto: persistentContainer.viewContext)
         note.title = "Ваша новая заметка"
         note.description_note = "Добавьте описание"
+        note.fontTitle = "system"
+        note.fontDescription = "system"
+        note.fontSizeTitle = 14
+        note.fontSizeDescription = 12
         return note
     }
     

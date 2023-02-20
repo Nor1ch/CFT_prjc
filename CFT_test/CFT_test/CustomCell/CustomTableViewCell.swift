@@ -64,8 +64,18 @@ class CustomTableViewCell: UITableViewCell {
         addSubview(containerView)
     }
     
-    func setupCell(title: String, image: Data?){
+    func setupCell(title: String, fontSizeTitle: Double, fontTitle: String, image: Data?){
         titleLabelCell.text = title
+        switch fontTitle {
+        case "system":
+            titleLabelCell.font = .systemFont(ofSize: fontSizeTitle)
+        case "bold":
+            titleLabelCell.font = .boldSystemFont(ofSize: fontSizeTitle)
+        case "italic":
+            titleLabelCell.font = .italicSystemFont(ofSize: fontSizeTitle)
+        default:
+            break
+        }
     }
     
     private func makeConstraints() {

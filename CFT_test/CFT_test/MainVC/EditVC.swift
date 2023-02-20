@@ -13,10 +13,10 @@ class EditVC: UIViewController {
     
     var note: Note?
     
-    private var fontSizeDescription = 12
-    private var fontDescription: UIFont = .systemFont(ofSize: 12)
-    private var fontSizeTitle = 12
-    private var fontTitle: UIFont = .systemFont(ofSize: 12)
+    private var fontSizeDescription: Double?
+    private var fontDescription: UIFont?
+    private var fontSizeTitle: Double?
+    private var fontTitle: UIFont?
     
     private lazy var imageViewEdit: UIImageView = {
        let view = UIImageView()
@@ -86,7 +86,36 @@ class EditVC: UIViewController {
         
         if let note = note {
             titleTextViewEdit.text = note.title
+            fontSizeTitle = note.fontSizeTitle
+            switch note.fontTitle {
+            case "system":
+                fontTitle = .systemFont(ofSize: note.fontSizeTitle)
+                titleTextViewEdit.font = fontTitle
+            case "bold":
+                fontTitle = .boldSystemFont(ofSize: note.fontSizeTitle)
+                titleTextViewEdit.font = fontTitle
+            case "italic":
+                fontTitle = .italicSystemFont(ofSize: note.fontSizeTitle)
+                titleTextViewEdit.font = fontTitle
+            default:
+                break
+            }
             descriptionTextViewEdit.text = note.description_note
+            fontSizeDescription = note.fontSizeDescription
+            switch note.fontDescription {
+            case "system":
+                fontDescription = .systemFont(ofSize: note.fontSizeDescription)
+                descriptionTextViewEdit.font = fontDescription
+            case "bold":
+                fontDescription = .boldSystemFont(ofSize: note.fontSizeDescription)
+                descriptionTextViewEdit.font = fontDescription
+            case "italic":
+                fontDescription = .italicSystemFont(ofSize: note.fontSizeDescription)
+                descriptionTextViewEdit.font = fontDescription
+            default:
+                break
+            }
+            
         }
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -140,25 +169,26 @@ class EditVC: UIViewController {
     
     @objc private func doSizeDescription(){
         navigationItem.rightBarButtonItem?.isEnabled = true
+        
         if fontSizeDescription != 22 {
-            fontSizeDescription += 2
-            descriptionTextViewEdit.font = fontDescription.withSize(CGFloat(fontSizeDescription))
+            fontSizeDescription! += 2
+            descriptionTextViewEdit.font = fontDescription?.withSize(CGFloat(fontSizeDescription ?? 14))
         } else {
             fontSizeDescription = 12
-            descriptionTextViewEdit.font = fontDescription.withSize(CGFloat(fontSizeDescription))
+            descriptionTextViewEdit.font = fontDescription?.withSize(CGFloat(fontSizeDescription ?? 14))
         }
     }
     @objc private func doFontDescription(){
         navigationItem.rightBarButtonItem?.isEnabled = true
-        switch fontDescription.withSize(CGFloat(fontSizeDescription)) {
-        case .systemFont(ofSize: CGFloat(fontSizeDescription)):
-            fontDescription = .boldSystemFont(ofSize: CGFloat(fontSizeDescription))
+        switch fontDescription!.withSize(CGFloat(fontSizeDescription ?? 12)) {
+        case .systemFont(ofSize: CGFloat(fontSizeDescription ?? 12)):
+            fontDescription = .boldSystemFont(ofSize: CGFloat(fontSizeDescription ?? 12))
             descriptionTextViewEdit.font = fontDescription
-        case .boldSystemFont(ofSize: CGFloat(fontSizeDescription)):
-            fontDescription = .italicSystemFont(ofSize: CGFloat(fontSizeDescription))
+        case .boldSystemFont(ofSize: CGFloat(fontSizeDescription ?? 12)):
+            fontDescription = .italicSystemFont(ofSize: CGFloat(fontSizeDescription ?? 12))
             descriptionTextViewEdit.font = fontDescription
-        case .italicSystemFont(ofSize: CGFloat(fontSizeDescription)):
-            fontDescription = .systemFont(ofSize: CGFloat(fontSizeDescription))
+        case .italicSystemFont(ofSize: CGFloat(fontSizeDescription ?? 12)):
+            fontDescription = .systemFont(ofSize: CGFloat(fontSizeDescription ?? 12))
             descriptionTextViewEdit.font = fontDescription
         default:
             break
@@ -169,24 +199,24 @@ class EditVC: UIViewController {
     @objc private func doSizeTitle(){
         navigationItem.rightBarButtonItem?.isEnabled = true
         if fontSizeTitle != 22 {
-            fontSizeTitle += 2
-            titleTextViewEdit.font = fontTitle.withSize(CGFloat(fontSizeTitle))
+            fontSizeTitle! += 2
+            titleTextViewEdit.font = fontTitle?.withSize(CGFloat(fontSizeTitle ?? 14))
         } else {
-            fontSizeTitle = 12
-            titleTextViewEdit.font = fontTitle.withSize(CGFloat(fontSizeTitle))
+            fontSizeTitle = 14
+            titleTextViewEdit.font = fontTitle?.withSize(CGFloat(fontSizeTitle ?? 14))
         }
     }
     @objc private func doFontTitle(){
         navigationItem.rightBarButtonItem?.isEnabled = true
-        switch fontTitle.withSize(CGFloat(fontSizeTitle)) {
-        case .systemFont(ofSize: CGFloat(fontSizeTitle)):
-            fontTitle = .boldSystemFont(ofSize: CGFloat(fontSizeTitle))
+        switch fontTitle!.withSize(CGFloat(fontSizeTitle ?? 14)) {
+        case .systemFont(ofSize: CGFloat(fontSizeTitle ?? 14)):
+            fontTitle = .boldSystemFont(ofSize: CGFloat(fontSizeTitle ?? 14))
             titleTextViewEdit.font = fontTitle
-        case .boldSystemFont(ofSize: CGFloat(fontSizeTitle)):
-            fontTitle = .italicSystemFont(ofSize: CGFloat(fontSizeTitle))
+        case .boldSystemFont(ofSize: CGFloat(fontSizeTitle ?? 14)):
+            fontTitle = .italicSystemFont(ofSize: CGFloat(fontSizeTitle ?? 14))
             titleTextViewEdit.font = fontTitle
-        case .italicSystemFont(ofSize: CGFloat(fontSizeTitle)):
-            fontTitle = .systemFont(ofSize: CGFloat(fontSizeTitle))
+        case .italicSystemFont(ofSize: CGFloat(fontSizeTitle ?? 14)):
+            fontTitle = .systemFont(ofSize: CGFloat(fontSizeTitle ?? 14))
             titleTextViewEdit.font = fontTitle
         default:
             break
@@ -200,6 +230,29 @@ class EditVC: UIViewController {
         
         note?.title = titleTextViewEdit.text
         note?.description_note = descriptionTextViewEdit.text
+        note?.fontSizeTitle = fontSizeTitle ?? 14
+        note?.fontSizeDescription = fontSizeDescription ?? 12
+        switch fontTitle!.withSize(CGFloat(fontSizeTitle ?? 14)) {
+        case .systemFont(ofSize: CGFloat(fontSizeTitle ?? 14)):
+            note?.fontTitle = "system"
+        case .boldSystemFont(ofSize: CGFloat(fontSizeTitle ?? 14)):
+            note?.fontTitle = "bold"
+        case .italicSystemFont(ofSize: CGFloat(fontSizeTitle ?? 14)):
+            note?.fontTitle = "italic"
+        default:
+            break
+        }
+        
+        switch fontDescription!.withSize(CGFloat(fontSizeDescription ?? 12)) {
+        case .systemFont(ofSize: CGFloat(fontSizeDescription ?? 12)):
+            note?.fontDescription = "system"
+        case .boldSystemFont(ofSize: CGFloat(fontSizeDescription ?? 12)):
+            note?.fontDescription = "bold"
+        case .italicSystemFont(ofSize: CGFloat(fontSizeDescription ?? 12)):
+            note?.fontDescription = "italic"
+        default:
+            break
+        }
         try? note?.managedObjectContext?.save()
         navigationController?.popViewController(animated: true)
     }

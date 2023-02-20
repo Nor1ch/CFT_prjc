@@ -67,8 +67,8 @@ extension MainVC: UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.identifier) as? CustomTableViewCell
-        if let item = viewModel?.fetchResultsController().object(at: indexPath){
-        cell?.setupCell(title: item.title ?? "nil", image: nil)
+        if let note = viewModel?.fetchResultsController().object(at: indexPath){
+            cell?.setupCell(title: note.title ?? "nil", fontSizeTitle: note.fontSizeTitle, fontTitle: note.fontTitle ?? "nil", image: nil)
         }
         return cell ?? UITableViewCell()
     }
@@ -125,7 +125,7 @@ extension MainVC: NSFetchedResultsControllerDelegate {
             if let indexPath = indexPath {
                 if let note = viewModel?.fetchResultsController().object(at: indexPath){
                 let cell = tableView.cellForRow(at: indexPath) as? CustomTableViewCell
-                cell?.setupCell(title: note.title ?? "nil", image: nil)
+                    cell?.setupCell(title: note.title ?? "nil", fontSizeTitle: note.fontSizeTitle, fontTitle: note.fontTitle ?? "nil", image: nil)
                 }
             }
         }
